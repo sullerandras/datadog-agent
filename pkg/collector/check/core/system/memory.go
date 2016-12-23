@@ -106,5 +106,5 @@ func (c *MemoryCheck) ID() string {
 func (c *MemoryCheck) Stop() {}
 
 func init() {
-	core.RegisterCheck("memory", &MemoryCheck{})
+	core.RegisterDefaultCheck("memory", &MemoryCheck{})
 }

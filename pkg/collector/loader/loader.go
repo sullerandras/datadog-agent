@@ -21,4 +21,5 @@ type ConfigProvider interface {
 // Load is supposed to break down instances and return different checks.
 type CheckLoader interface {
 	Load(config check.Config) ([]check.Check, error)
+	GetDefaultCheck() []check.Check
 }

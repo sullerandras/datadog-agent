@@ -132,9 +132,16 @@ func start(cmd *cobra.Command, args []string) {
 	// Instance the Aggregator
 	_ = aggregator.GetAggregator()
 
+	// First load the checks enable by default (ie: system, ...)
+	loaders := getCheckLoaders()
+	for _, loader := range loaders {
+		for _, check := range loader.GetDefaultCheck() {
+			_scheduler.Enter(check)
+		}
+	}
+
 	// given a list of configurations, try to load corresponding checks using different loaders
 	// TODO add check type to the conf file so that we avoid the inner for
-	loaders := getCheckLoaders()
 	for _, conf := range configs {
 		for _, loader := range loaders {
 			res, err := loader.Load(conf)

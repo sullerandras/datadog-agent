@@ -81,3 +81,7 @@ func (cl *PythonCheckLoader) Load(config check.Config) ([]check.Check, error) {
 
 	return checks, nil
 }
+
+func (gl *PythonCheckLoader) GetDefaultCheck() []check.Check {
+	return []check.Check{}
+}

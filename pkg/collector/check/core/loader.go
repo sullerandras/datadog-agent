@@ -10,9 +10,17 @@ import (
 // Catalog keeps track of Go checks by name
 var catalog = make(map[string]check.Check)
 
+// DefaultCatalog keeps track of the Go checks enabled by default
+var defaultCatalog = make(map[string]check.Check)
+
 // RegisterCheck adds a check to the catalog
 func RegisterCheck(name string, c check.Check) {
 	catalog[name] = c
+}
+
+// RegisterDefaultCheck adds a check to the catalog that will always be enabled
+func RegisterDefaultCheck(name string, c check.Check) {
+	defaultCatalog[name] = c
 }
 
 // GoCheckLoader is a specific loader for checks living in this package
@@ -44,4 +52,17 @@ func (gl *GoCheckLoader) Load(config check.Config) ([]check.Check, error) {
 	}
 
 	return checks, nil
+}
+
+func (gl *GoCheckLoader) GetDefaultCheck() []check.Check {
+	checks := []check.Check{}
+
+	for _, c := range defaultCatalog {
+		newCheck := c
+		newCheck.Configure(nil)
+		newCheck.InitSender()
+		checks = append(checks, newCheck)
+	}
+
+	return checks
 }
