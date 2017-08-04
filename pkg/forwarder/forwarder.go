@@ -136,8 +136,14 @@ func (f *DefaultForwarder) retryTransactions(tickTime time.Time) {
 
 	for _, t := range f.retryQueue {
 		if t.GetNextFlush().Before(tickTime) {
-			f.lowPrio <- t
-			transactionsCreation.Add("SuccessfullyRetried", 1)
+			select {
+			case f.lowPrio <- t:
+				transactionsCreation.Add("SuccessfullyRetried", 1)
+			default:
+				log.Errorf("workers retry queue is full, dropping transactions !")
+				transactionsCreation.Add("Dropped", 1)
+				droppedTransaction++
+			}
 		} else if len(newQueue) < f.retryQueueLimit {
 			newQueue = append(newQueue, t)
 		} else {
