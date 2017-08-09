@@ -96,7 +96,8 @@ type Forwarder interface {
 
 // DefaultForwarder is in charge of receiving transaction payloads and sending them to Datadog backend over HTTP.
 type DefaultForwarder struct {
-	waitingPipe         chan Transaction
+	highPrio            chan Transaction
+	lowPrio             chan Transaction
 	requeuedTransaction chan Transaction
 	stopRetry           chan bool
 	workers             []*Worker
@@ -135,7 +136,7 @@ func (f *DefaultForwarder) retryTransactions(tickTime time.Time) {
 
 	for _, t := range f.retryQueue {
 		if t.GetNextFlush().Before(tickTime) {
-			f.waitingPipe <- t
+			f.lowPrio <- t
 			transactionsCreation.Add("SuccessfullyRetried", 1)
 		} else if len(newQueue) < f.retryQueueLimit {
 			newQueue = append(newQueue, t)
@@ -172,7 +173,8 @@ func (f *DefaultForwarder) handleFailedTransactions() {
 }
 
 func (f *DefaultForwarder) init() {
-	f.waitingPipe = make(chan Transaction, chanBufferSize)
+	f.highPrio = make(chan Transaction, chanBufferSize)
+	f.lowPrio = make(chan Transaction, chanBufferSize)
 	f.requeuedTransaction = make(chan Transaction, chanBufferSize)
 	f.stopRetry = make(chan bool)
 	f.workers = []*Worker{}
@@ -194,7 +196,7 @@ func (f *DefaultForwarder) Start() error {
 
 	blockedList := newBlockedEndpoints()
 	for i := 0; i < f.NumberOfWorkers; i++ {
-		w := NewWorker(f.waitingPipe, f.requeuedTransaction, blockedList)
+		w := NewWorker(f.highPrio, f.lowPrio, f.requeuedTransaction, blockedList)
 		w.Start()
 		f.workers = append(f.workers, w)
 	}
@@ -236,7 +238,8 @@ func (f *DefaultForwarder) Stop() {
 	}
 	f.workers = []*Worker{}
 	f.retryQueue = []Transaction{}
-	close(f.waitingPipe)
+	close(f.highPrio)
+	close(f.lowPrio)
 	close(f.requeuedTransaction)
 	log.Info("DefaultForwarder stopped")
 }
@@ -272,7 +275,7 @@ func (f *DefaultForwarder) sendHTTPTransactions(transactions []*HTTPTransaction)
 	}
 
 	for _, t := range transactions {
-		f.waitingPipe <- t
+		f.highPrio <- t
 	}
 
 	return nil
