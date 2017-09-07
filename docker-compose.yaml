@@ -1,0 +1,310 @@
+version: '2'
+services:
+  dogstatsd:
+    image: "datadog/docker-dd-agent"
+    ports:
+      - 8125:8125/udp
+    environment:
+      - "DD_API_KEY=d1ccbdad2df544ed845d432bdd3c0b75"
+
+  flood0:
+    image: "debian"
+    links:
+      - dogstatsd:dogstatsd
+    volumes:
+      - ./flood_dogstatsd:/flood_dogstatsd
+    environment:
+      - "DD_API_KEY=d1ccbdad2df544ed845d432bdd3c0b75"
+    command:
+      - ./flood_dogstatsd
+  flood1:
+    image: "debian"
+    links:
+      - dogstatsd:dogstatsd
+    volumes:
+      - ./flood_dogstatsd:/flood_dogstatsd
+    environment:
+      - "DD_API_KEY=d1ccbdad2df544ed845d432bdd3c0b75"
+    command:
+      - ./flood_dogstatsd
+  flood2:
+    image: "debian"
+    links:
+      - dogstatsd:dogstatsd
+    volumes:
+      - ./flood_dogstatsd:/flood_dogstatsd
+    environment:
+      - "DD_API_KEY=d1ccbdad2df544ed845d432bdd3c0b75"
+    command:
+      - ./flood_dogstatsd
+  flood3:
+    image: "debian"
+    links:
+      - dogstatsd:dogstatsd
+    volumes:
+      - ./flood_dogstatsd:/flood_dogstatsd
+    environment:
+      - "DD_API_KEY=d1ccbdad2df544ed845d432bdd3c0b75"
+    command:
+      - ./flood_dogstatsd
+  flood4:
+    image: "debian"
+    links:
+      - dogstatsd:dogstatsd
+    volumes:
+      - ./flood_dogstatsd:/flood_dogstatsd
+    environment:
+      - "DD_API_KEY=d1ccbdad2df544ed845d432bdd3c0b75"
+    command:
+      - ./flood_dogstatsd
+  flood5:
+    image: "debian"
+    links:
+      - dogstatsd:dogstatsd
+    volumes:
+      - ./flood_dogstatsd:/flood_dogstatsd
+    environment:
+      - "DD_API_KEY=d1ccbdad2df544ed845d432bdd3c0b75"
+    command:
+      - ./flood_dogstatsd
+  flood6:
+    image: "debian"
+    links:
+      - dogstatsd:dogstatsd
+    volumes:
+      - ./flood_dogstatsd:/flood_dogstatsd
+    environment:
+      - "DD_API_KEY=d1ccbdad2df544ed845d432bdd3c0b75"
+    command:
+      - ./flood_dogstatsd
+  flood7:
+    image: "debian"
+    links:
+      - dogstatsd:dogstatsd
+    volumes:
+      - ./flood_dogstatsd:/flood_dogstatsd
+    environment:
+      - "DD_API_KEY=d1ccbdad2df544ed845d432bdd3c0b75"
+    command:
+      - ./flood_dogstatsd
+  flood8:
+    image: "debian"
+    links:
+      - dogstatsd:dogstatsd
+    volumes:
+      - ./flood_dogstatsd:/flood_dogstatsd
+    environment:
+      - "DD_API_KEY=d1ccbdad2df544ed845d432bdd3c0b75"
+    command:
+      - ./flood_dogstatsd
+  flood9:
+    image: "debian"
+    links:
+      - dogstatsd:dogstatsd
+    volumes:
+      - ./flood_dogstatsd:/flood_dogstatsd
+    environment:
+      - "DD_API_KEY=d1ccbdad2df544ed845d432bdd3c0b75"
+    command:
+      - ./flood_dogstatsd
+
+  flood10:
+    image: "debian"
+    links:
+      - dogstatsd:dogstatsd
+    volumes:
+      - ./flood_dogstatsd:/flood_dogstatsd
+    environment:
+      - "DD_API_KEY=d1ccbdad2df544ed845d432bdd3c0b75"
+    command:
+      - ./flood_dogstatsd
+  flood11:
+    image: "debian"
+    links:
+      - dogstatsd:dogstatsd
+    volumes:
+      - ./flood_dogstatsd:/flood_dogstatsd
+    environment:
+      - "DD_API_KEY=d1ccbdad2df544ed845d432bdd3c0b75"
+    command:
+      - ./flood_dogstatsd
+  flood12:
+    image: "debian"
+    links:
+      - dogstatsd:dogstatsd
+    volumes:
+      - ./flood_dogstatsd:/flood_dogstatsd
+    environment:
+      - "DD_API_KEY=d1ccbdad2df544ed845d432bdd3c0b75"
+    command:
+      - ./flood_dogstatsd
+  flood13:
+    image: "debian"
+    links:
+      - dogstatsd:dogstatsd
+    volumes:
+      - ./flood_dogstatsd:/flood_dogstatsd
+    environment:
+      - "DD_API_KEY=d1ccbdad2df544ed845d432bdd3c0b75"
+    command:
+      - ./flood_dogstatsd
+  flood14:
+    image: "debian"
+    links:
+      - dogstatsd:dogstatsd
+    volumes:
+      - ./flood_dogstatsd:/flood_dogstatsd
+    environment:
+      - "DD_API_KEY=d1ccbdad2df544ed845d432bdd3c0b75"
+    command:
+      - ./flood_dogstatsd
+  flood15:
+    image: "debian"
+    links:
+      - dogstatsd:dogstatsd
+    volumes:
+      - ./flood_dogstatsd:/flood_dogstatsd
+    environment:
+      - "DD_API_KEY=d1ccbdad2df544ed845d432bdd3c0b75"
+    command:
+      - ./flood_dogstatsd
+  flood16:
+    image: "debian"
+    links:
+      - dogstatsd:dogstatsd
+    volumes:
+      - ./flood_dogstatsd:/flood_dogstatsd
+    environment:
+      - "DD_API_KEY=d1ccbdad2df544ed845d432bdd3c0b75"
+    command:
+      - ./flood_dogstatsd
+  flood17:
+    image: "debian"
+    links:
+      - dogstatsd:dogstatsd
+    volumes:
+      - ./flood_dogstatsd:/flood_dogstatsd
+    environment:
+      - "DD_API_KEY=d1ccbdad2df544ed845d432bdd3c0b75"
+    command:
+      - ./flood_dogstatsd
+  flood18:
+    image: "debian"
+    links:
+      - dogstatsd:dogstatsd
+    volumes:
+      - ./flood_dogstatsd:/flood_dogstatsd
+    environment:
+      - "DD_API_KEY=d1ccbdad2df544ed845d432bdd3c0b75"
+    command:
+      - ./flood_dogstatsd
+  flood19:
+    image: "debian"
+    links:
+      - dogstatsd:dogstatsd
+    volumes:
+      - ./flood_dogstatsd:/flood_dogstatsd
+    environment:
+      - "DD_API_KEY=d1ccbdad2df544ed845d432bdd3c0b75"
+    command:
+      - ./flood_dogstatsd
+  flood20:
+    image: "debian"
+    links:
+      - dogstatsd:dogstatsd
+    volumes:
+      - ./flood_dogstatsd:/flood_dogstatsd
+    environment:
+      - "DD_API_KEY=d1ccbdad2df544ed845d432bdd3c0b75"
+    command:
+      - ./flood_dogstatsd
+  flood21:
+    image: "debian"
+    links:
+      - dogstatsd:dogstatsd
+    volumes:
+      - ./flood_dogstatsd:/flood_dogstatsd
+    environment:
+      - "DD_API_KEY=d1ccbdad2df544ed845d432bdd3c0b75"
+    command:
+      - ./flood_dogstatsd
+  flood22:
+    image: "debian"
+    links:
+      - dogstatsd:dogstatsd
+    volumes:
+      - ./flood_dogstatsd:/flood_dogstatsd
+    environment:
+      - "DD_API_KEY=d1ccbdad2df544ed845d432bdd3c0b75"
+    command:
+      - ./flood_dogstatsd
+  flood23:
+    image: "debian"
+    links:
+      - dogstatsd:dogstatsd
+    volumes:
+      - ./flood_dogstatsd:/flood_dogstatsd
+    environment:
+      - "DD_API_KEY=d1ccbdad2df544ed845d432bdd3c0b75"
+    command:
+      - ./flood_dogstatsd
+  flood24:
+    image: "debian"
+    links:
+      - dogstatsd:dogstatsd
+    volumes:
+      - ./flood_dogstatsd:/flood_dogstatsd
+    environment:
+      - "DD_API_KEY=d1ccbdad2df544ed845d432bdd3c0b75"
+    command:
+      - ./flood_dogstatsd
+  flood25:
+    image: "debian"
+    links:
+      - dogstatsd:dogstatsd
+    volumes:
+      - ./flood_dogstatsd:/flood_dogstatsd
+    environment:
+      - "DD_API_KEY=d1ccbdad2df544ed845d432bdd3c0b75"
+    command:
+      - ./flood_dogstatsd
+  flood26:
+    image: "debian"
+    links:
+      - dogstatsd:dogstatsd
+    volumes:
+      - ./flood_dogstatsd:/flood_dogstatsd
+    environment:
+      - "DD_API_KEY=d1ccbdad2df544ed845d432bdd3c0b75"
+    command:
+      - ./flood_dogstatsd
+  flood27:
+    image: "debian"
+    links:
+      - dogstatsd:dogstatsd
+    volumes:
+      - ./flood_dogstatsd:/flood_dogstatsd
+    environment:
+      - "DD_API_KEY=d1ccbdad2df544ed845d432bdd3c0b75"
+    command:
+      - ./flood_dogstatsd
+  flood28:
+    image: "debian"
+    links:
+      - dogstatsd:dogstatsd
+    volumes:
+      - ./flood_dogstatsd:/flood_dogstatsd
+    environment:
+      - "DD_API_KEY=d1ccbdad2df544ed845d432bdd3c0b75"
+    command:
+      - ./flood_dogstatsd
+  flood29:
+    image: "debian"
+    links:
+      - dogstatsd:dogstatsd
+    volumes:
+      - ./flood_dogstatsd:/flood_dogstatsd
+    environment:
+      - "DD_API_KEY=d1ccbdad2df544ed845d432bdd3c0b75"
+    command:
+      - ./flood_dogstatsd

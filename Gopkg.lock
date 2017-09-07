@@ -8,6 +8,12 @@
   version = "4.4"
 
 [[projects]]
+  name = "github.com/DataDog/datadog-go"
+  packages = ["statsd"]
+  revision = "0ddda6bee21174ef6c4873647cb0d6ec9cba996f"
+  version = "1.1.0"
+
+[[projects]]
   branch = "master"
   name = "github.com/DataDog/gohai"
   packages = ["cpu","filesystem","memory","network","platform","processes","processes/gops"]
@@ -347,6 +353,6 @@
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
-  inputs-digest = "4f8c995588db39de1ea16dce38b30cf8159ae0f485a3c136a1cae8cb353ce083"
+  inputs-digest = "a0c4cbf235d0a6f1f4861fb350922329883fd08abb6706b14a0628e7c3138ab2"
   solver-name = "gps-cdcl"
   solver-version = 1
