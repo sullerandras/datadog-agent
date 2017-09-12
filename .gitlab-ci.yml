@@ -15,7 +15,8 @@ variables:
   DEPLOY: $DOCKER_REGISTRY/datadog-agent-builders:deploy # For now, just a renamed version of the image datadog/mars-jenkins-scripts
   AGENT_OMNIBUS_PACKAGE_DIR: $CI_PROJECT_DIR/.omnibus/pkg/
   STATIC_BINARIES_DIR: bin/static
-  DEB_S3_BUCKET: apt-agent6.datad0g.com
+  DEB_S3_BUCKET: apt.datad0g.com
+  RPM_S3_BUCKET: yum.datad0g.com
   DD_REPO_BRANCH_NAME: $CI_COMMIT_REF_NAME
 
 before_script:
@@ -204,10 +205,14 @@ agent_rpm-x64:
       - $AGENT_OMNIBUS_PACKAGE_DIR
 
 
+
+#
+# add dd-agent-testing
+#
+
 #
 # deploy
 #
-
 
 # deploy debian packages to apt staging repo
 deploy_deb:
