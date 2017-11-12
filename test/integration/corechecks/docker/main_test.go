@@ -23,7 +23,7 @@ import (
 )
 
 var retryDelay = flag.Int("retry-delay", 1, "time to wait between retries (default 1 second)")
-var retryTimeout = flag.Int("retry-timeout", 10, "maximum time before failure (default 10 seconds)")
+var retryTimeout = flag.Int("retry-timeout", 30, "maximum time before failure (default 30 seconds)")
 var skipCleanup = flag.Bool("skip-cleanup", false, "skip cleanup of the docker containers (for debugging)")
 
 var dockerCfgString = `

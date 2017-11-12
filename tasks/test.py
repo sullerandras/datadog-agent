@@ -13,7 +13,6 @@ from .utils import pkg_config_path, get_version
 from .go import fmt, lint, vet
 from .build_tags import get_default_build_tags
 from .agent import integration_tests as agent_integration_tests
-from .dogstatsd import integration_tests as dsd_integration_tests
 
 PROFILE_COV = "profile.cov"
 
@@ -75,38 +74,25 @@ def test(ctx, targets=None, coverage=False, race=False, use_embedded_libs=False,
         matches = []
         for target in targets:
             for root, _, filenames in os.walk(target):
-                if fnmatch.filter(filenames, "*.go"):
+                if invoke.platform.WINDOWS and root in WIN_PKG_BLACKLIST:
+                    print("Skipping blacklisted directory {}\n".format(root))
+                    continue
+                if fnmatch.filter(filenames, "*_test.go"):
                     matches.append(root)
     else:
         matches = ["{}/...".format(t) for t in targets]
 
-    for match in matches:
-        if invoke.platform.WINDOWS:
-            if match in WIN_PKG_BLACKLIST:
-                print("Skipping blacklisted directory {}\n".format(match))
-                continue
+    cmd = 'go test -tags "{go_build_tags}" {race_opt} -short {covermode_opt} {pkg_folder}'
+    args = {
+        "go_build_tags": " ".join(build_tags),
+        "race_opt": race_opt,
+        "covermode_opt": covermode_opt,
+        "pkg_folder": " ".join(matches),
+    }
+    ctx.run(cmd.format(**args), env=env)
 
-        coverprofile = ""
-        if coverage:
-            profile_tmp = "{}/profile.tmp".format(match)
-            coverprofile = "-coverprofile={}".format(profile_tmp)
-        cmd = 'go test -tags "{go_build_tags}" {race_opt} -short {covermode_opt} {coverprofile} {pkg_folder}'
-        args = {
-            "go_build_tags": " ".join(build_tags),
-            "race_opt": race_opt,
-            "covermode_opt": covermode_opt,
-            "coverprofile": coverprofile,
-            "pkg_folder": match,
-        }
-        ctx.run(cmd.format(**args), env=env)
-
-        if coverage:
-            if os.path.exists(profile_tmp):
-                ctx.run("cat {} | tail -n +2 >> {}".format(profile_tmp, PROFILE_COV))
-                os.remove(profile_tmp)
-
-    if coverage:
-        ctx.run("go tool cover -func {}".format(PROFILE_COV))
+    #if coverage:
+    #    ctx.run("go tool cover -func {}".format(PROFILE_COV))
 
 
 @task
@@ -115,7 +101,6 @@ def integration_tests(ctx, install_deps=False, race=False, remote_docker=False):
     Run all the available integration tests
     """
     agent_integration_tests(ctx, install_deps, race, remote_docker)
-    dsd_integration_tests(ctx, install_deps, race, remote_docker)
 
 
 @task

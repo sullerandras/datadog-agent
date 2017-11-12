@@ -13,8 +13,6 @@ from .build_tags import get_build_tags, get_default_build_tags
 from .utils import get_build_flags, bin_name, get_root
 from .utils import REPO_PATH
 
-from .go import deps
-
 # constants
 DOGSTATSD_BIN_PATH = os.path.join(".", "bin", "dogstatsd")
 STATIC_BIN_PATH = os.path.join(".", "bin", "static")
@@ -145,33 +143,6 @@ def omnibus_build(ctx):
             "overrides": overrides_cmd
         }
         ctx.run(cmd.format(**args))
-
-
-@task
-def integration_tests(ctx, install_deps=False, race=False, remote_docker=False):
-    """
-    Run integration tests for dogstatsd
-    """
-    if install_deps:
-        deps(ctx)
-
-    test_args = {
-        "go_build_tags": " ".join(get_default_build_tags()),
-        "race_opt": "-race" if race else "",
-        "exec_opts": "",
-    }
-
-    if remote_docker:
-        test_args["exec_opts"] = "-exec \"inv docker.dockerize-test\""
-
-    go_cmd = 'go test {race_opt} -tags "{go_build_tags}" {exec_opts}'.format(**test_args)
-
-    prefixes = [
-        "./test/integration/dogstatsd/...",
-    ]
-
-    for prefix in prefixes:
-        ctx.run("{} {}".format(go_cmd, prefix))
 
 
 @task

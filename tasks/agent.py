@@ -160,21 +160,20 @@ def integration_tests(ctx, install_deps=False, race=False, remote_docker=False):
         "go_build_tags": " ".join(get_default_build_tags()),
         "race_opt": "-race" if race else "",
         "exec_opts": "",
+        "prefixes": " ".join([
+            "./test/integration/config_providers/...",
+            "./test/integration/corechecks/...",
+            "./test/integration/dogstatsd/...",
+            # "./test/integration/listeners/...", ## Hangups
+        ])
     }
 
     if remote_docker:
-        test_args["exec_opts"] = "-exec \"inv docker.dockerize-test\""
+        test_args["exec_opts"] = "-exec \"inv docker.dockerize-test\" -p 2"
 
-    go_cmd = 'go test {race_opt} -tags "{go_build_tags}" {exec_opts}'.format(**test_args)
+    go_cmd = 'go test {race_opt} -tags "{go_build_tags}" {exec_opts} {prefixes}'.format(**test_args)
 
-    prefixes = [
-        "./test/integration/config_providers/...",
-        "./test/integration/corechecks/...",
-        # "./test/integration/listeners/...", ## Hangups
-    ]
-
-    for prefix in prefixes:
-        ctx.run("{} {}".format(go_cmd, prefix))
+    ctx.run(go_cmd)
 
 
 @task
