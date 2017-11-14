@@ -24,6 +24,12 @@ api_key:
 # Force the hostname to whatever you want. (default: auto-detected)
 # hostname: mymachine.mydomain
 
+# Set the host's tags (optional)
+# tags: 
+#   - mytag
+#   - env:prod
+#   - role:database
+
 # The path containing check configuration files
 # By default, uses the conf.d folder located in the agent configuration folder.
 # confd_path:
