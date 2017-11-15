@@ -20,13 +20,13 @@ import (
 	log "github.com/cihub/seelog"
 )
 
-const logFileMaxSize = 10 * 1024 * 1024         // 10MB
-const logDateFormat = "2006-01-02 15:04:05 MST" // see time.Format for format syntax
+const logFileMaxSize = 10 * 1024 * 1024                // 10MB
+const logDefaultDateFormat = "2006-01-02 15:04:05 MST" // see time.Format for format syntax
 
 var logCertPool *x509.CertPool
 
 // SetupLogger sets up the default logger
-func SetupLogger(logLevel, logFile, uri string, rfc, tls bool, pem string, logToConsole bool) error {
+func SetupLogger(logLevel, logFile, uri string, rfc, tls bool, pem string, logToConsole, logJson bool, logDateFormat string) error {
 	var syslog bool
 
 	if uri != "" { // non-blank uri enables syslog
@@ -62,8 +62,12 @@ func SetupLogger(logLevel, logFile, uri string, rfc, tls bool, pem string, logTo
 		configTemplate += syslogTemplate
 	}
 	configTemplate += `</outputs>
-    <formats>
-        <format id="common" format="%%Date(%s) | %%LEVEL | (%%File:%%Line in %%FuncShort) | %%Msg%%n"/>`
+		<formats>`
+	if logJson {
+		configTemplate += `<format id="common" format="{&quot;time&quot;:&quot;%%Date(%s)&quot;,&quot;level&quot;=&quot;%%LEVEL&quot;,&quot;line&quot;:&quot;%%File:%%Line&quot;,&quot;func&quot;:&quot;%%FuncShort&quot;,&quot;log&quot;:&quot;%%Msg&quot;}%%n"/>`
+	} else {
+		configTemplate += `<format id="common" format="%%Date(%s) | %%LEVEL | (%%File:%%Line in %%FuncShort) | %%Msg%%n"/>`
+	}
 	if syslog {
 		if rfc {
 			configTemplate += `<format id="syslog" format="%%CustomSyslogHeader(20,true) %%LEVEL | (%%RelFile:%%Line) | %%Msg%%n" />`
@@ -74,6 +78,9 @@ func SetupLogger(logLevel, logFile, uri string, rfc, tls bool, pem string, logTo
 
 	configTemplate += `</formats>
 </seelog>`
+	if logDateFormat == "" {
+		logDateFormat = logDefaultDateFormat
+	}
 	config := fmt.Sprintf(configTemplate, strings.ToLower(logLevel), logFile, logFileMaxSize, logDateFormat)
 
 	logger, err := log.LoggerFromConfigAsString(config)
